@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Controller
@@ -34,7 +35,10 @@ public class DesignTacoController {
 
         final Type[] types = Type.values();
         for (final Type type : types) {
-            model.addAttribute(type.toString().toLowerCase(), filterByType(ingredients, type));
+            final Optional<Ingredient> filteredType = filterByType(ingredients, type);
+            if (filteredType.isPresent()) {
+                model.addAttribute(type.toString().toLowerCase(), filteredType.get());
+            }
         }
 
         model.addAttribute("design", new Taco());
@@ -42,8 +46,8 @@ public class DesignTacoController {
         return "design";            // the logical view "design.html"
     }
 
-    private Ingredient filterByType(final List<Ingredient> ingredients, Type type) {
-        return ingredients.stream().filter(t -> t.equals(type)).findFirst().get();
+    private Optional<Ingredient> filterByType(final List<Ingredient> ingredients, final Type type) {
+        return ingredients.stream().filter(t -> t.getType().equals(type)).findAny();
     }
 
 }

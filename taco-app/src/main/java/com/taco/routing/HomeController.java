@@ -11,4 +11,8 @@ public class HomeController {
         return "home";
     }
 
+    public void foo() {
+
+    }
+
 }

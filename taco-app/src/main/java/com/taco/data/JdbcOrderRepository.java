@@ -61,7 +61,7 @@ public class JdbcOrderRepository implements OrderRepository {
   }
 
   private void saveTacoToOrder(Taco taco, long orderId) {
-    Map<String, Object> values = new HashMap<>();
+    Map<String, Object> values = new HashMap<>(2);
     values.put("tacoOrder", orderId);
     values.put("taco", taco.getId());
     orderTacoInserter.execute(values);

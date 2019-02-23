@@ -108,8 +108,7 @@ public class RawJdbcIngredientRepository implements IngredientRepository {
     }
     return null;
   }
-  // end::rawfindOne[]
-  
+
   @Override
   public Ingredient save(Ingredient ingredient) {
     // TODO: I only needed one method for comparison purposes, so

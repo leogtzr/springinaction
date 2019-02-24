@@ -10,7 +10,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.crypto.password.StandardPasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
@@ -68,9 +67,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 // the following two endpoints should be only accessible for users with ROLE_USER role.
                 .antMatchers("/design", "/orders")
-                .hasRole("ROLE_USER")
+                .hasRole("USER")
                 .antMatchers("/", "/**")
                 .permitAll()
+                .and()
+                .formLogin()
+                .loginPage("/login")
+                .loginProcessingUrl("/authenticate")
+                .defaultSuccessUrl("/design", true)
+                .and()
+                .logout()
+                .logoutSuccessUrl("/")
                 ;
+
+        /*
+        Another way of configuring this is:
+
+        http
+            .authorizeRequests()
+            .antMatchers("/design", "/orders")
+            .access("hasRole('ROLE_USER')")
+            .antMatchers("/", "/**").access("permitAll")
+         */
     }
 }

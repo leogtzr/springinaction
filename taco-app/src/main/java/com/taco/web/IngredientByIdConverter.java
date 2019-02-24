@@ -10,6 +10,7 @@ import com.taco.data.IngredientRepository;
 @Component
 public class IngredientByIdConverter implements Converter<String, Ingredient> {
 
+  @Autowired
   private IngredientRepository ingredientRepo;
 
   @Autowired

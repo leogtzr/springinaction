@@ -24,17 +24,19 @@ import com.taco.data.OrderRepository;
 @Controller
 @RequestMapping("/orders")
 @SessionAttributes("order")
-@ConfigurationProperties(prefix = "taco.orders")
+// @ConfigurationProperties(prefix = "taco.orders")
 public class OrderController {
 
     private OrderRepository orderRepo;
+    private OrderProps props;
     // the following property is set by using:
     // taco.orders.pageSize = XXX
     // or: export TACO_ORDERS_PAGESIZE=10
-    private int pageSize;
+    // private int pageSize;
 
-    public OrderController(OrderRepository orderRepo) {
+    public OrderController(final OrderRepository orderRepo, final OrderProps props) {
         this.orderRepo = orderRepo;
+        this.props = props;
     }
 
     @GetMapping("/current")
@@ -74,13 +76,13 @@ public class OrderController {
             final Model model
     ) {
 
-        final Pageable pageable = PageRequest.of(0, pageSize);
+        final Pageable pageable = PageRequest.of(0, props.getPageSize());
         model.addAttribute("orders", orderRepo.findByUserOrderByPlacedAtDesc(user, pageable));
 
         return "orderList";
     }
 
-    public void setPageSize(final int pageSize) {
-        this.pageSize = pageSize;
-    }
+//    public void setPageSize(final int pageSize) {
+//        this.pageSize = pageSize;
+//    }
 }

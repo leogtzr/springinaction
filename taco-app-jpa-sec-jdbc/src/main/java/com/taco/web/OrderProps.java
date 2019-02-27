@@ -11,11 +11,9 @@ import javax.validation.constraints.Min;
 @Component
 @ConfigurationProperties(prefix = "taco.orders")
 @Data
-@Validated
+@Validated              // enables the JSR-303 implementation ...
 public class OrderProps {
-
     @Min(value = 5, message = "must be between 5 and 25")
     @Max(value = 25, message = "must be between 5 and 25")
     private int pageSize = 20;
-
 }

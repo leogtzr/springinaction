@@ -11,11 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 
 import com.taco.domain.Taco;
 import com.taco.domain.Ingredient;
@@ -24,7 +20,9 @@ import com.taco.domain.Order;
 import com.taco.data.TacoRepository;
 
 @Controller
+// @RequestMapping(path = "/design", produces = "application/json")
 @RequestMapping("/design")
+//@CrossOrigin(origins = "*")
 @SessionAttributes("order")
 public class DesignTacoController {
   

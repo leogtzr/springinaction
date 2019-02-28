@@ -6,13 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.hateoas.EntityLinks;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
-@RequestMapping(path = "/design", produces = "application/json")
+@RequestMapping(path = "/design", produces = "application/json")                     // Accept: "application/json"
+// @RequestMapping(path = "/design", produces = {"application/json", "text/xml")     // Accept: "application/json"
 @CrossOrigin(origins = "*")
 public class DesignTacoController {
 
@@ -31,5 +31,14 @@ public class DesignTacoController {
             0, 12, Sort.by("createdAt").descending()
         );
         return tacoRepository.findAll(page).getContent();
+    }
+
+    @GetMapping("/{id}")
+    public Taco tacoById(@PathVariable("id") final Long id) {
+        final Optional<Taco> maybeTaco = tacoRepository.findById(id);
+        if (maybeTaco.isPresent()) {
+            return maybeTaco.get();
+        }
+        return null;
     }
 }

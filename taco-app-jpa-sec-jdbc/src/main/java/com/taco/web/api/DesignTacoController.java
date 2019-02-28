@@ -6,8 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.hateoas.EntityLinks;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.xml.ws.Response;
 import java.util.Optional;
 
 @RestController
@@ -34,11 +37,21 @@ public class DesignTacoController {
     }
 
     @GetMapping("/{id}")
-    public Taco tacoById(@PathVariable("id") final Long id) {
+    public ResponseEntity<Taco> tacoById(@PathVariable("id") final Long id) {
         final Optional<Taco> maybeTaco = tacoRepository.findById(id);
         if (maybeTaco.isPresent()) {
-            return maybeTaco.get();
+            // return maybeTaco.get();
+            return new ResponseEntity<>(maybeTaco.get(), HttpStatus.OK);
         }
-        return null;
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
+
+//    @GetMapping("/{id}")
+//    public Taco tacoById(@PathVariable("id") final Long id) {
+//        final Optional<Taco> maybeTaco = tacoRepository.findById(id);
+//        if (maybeTaco.isPresent()) {
+//            return maybeTaco.get();
+//        }
+//        return null;
+//    }
 }

@@ -46,6 +46,13 @@ public class DesignTacoController {
         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
+    @PostMapping(consumes = "application/json")             // Content-Type: application/json
+    @ResponseStatus(HttpStatus.CREATED)
+    // CREATED (201) indicates that not only the request was succesfull but it also created a resource
+    public Taco postTaco(@RequestBody final Taco taco) {
+        return tacoRepository.save(taco);
+    }
+
 //    @GetMapping("/{id}")
 //    public Taco tacoById(@PathVariable("id") final Long id) {
 //        final Optional<Taco> maybeTaco = tacoRepository.findById(id);

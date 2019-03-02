@@ -4,8 +4,10 @@ import javax.validation.Valid;
 
 import com.taco.domain.User;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -119,6 +121,14 @@ public class OrderController {
         }
 
         return orderRepo.save(order);
+    }
+
+    @DeleteMapping("/{orderId}")
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
+    public void deleteOrder(@PathVariable("orderId") final Long orderId) {
+        try {
+            orderRepo.deleteById(orderId);
+        } catch (final EmptyResultDataAccessException ex) {}
     }
 
 }

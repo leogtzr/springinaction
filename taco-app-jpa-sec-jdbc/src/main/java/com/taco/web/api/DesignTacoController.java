@@ -19,6 +19,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+
 @RestController
 @RequestMapping(path = "/design", produces = "application/json")                     // Accept: "application/json"
 // @RequestMapping(path = "/design", produces = {"application/json", "text/xml")     // Accept: "application/json"
@@ -51,10 +54,15 @@ public class DesignTacoController {
         final Resources<Resource<Taco>> recentResources = Resources.wrap(tacos);
 
         // recentResources.add(new Link("http://localhost:8080/design/recent", "recents"));
+//        recentResources.add(
+//                ControllerLinkBuilder.linkTo(DesignTacoController.class)
+//                        .slash("recent")                //          /recent
+//                        .withRel("recents")
+//);
+        //final Resources<Resource<Taco>> recentResources = Resources.wrap(tacos);
         recentResources.add(
-                ControllerLinkBuilder.linkTo(DesignTacoController.class)
-                        .slash("recent")
-                        .withRel("recents")
+                linkTo(methodOn(DesignTacoController.class).recentTacos())
+                .withRel("recents")
         );
 
         return recentResources;

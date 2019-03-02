@@ -6,11 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.hateoas.EntityLinks;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.Resource;
+import org.springframework.hateoas.Resources;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.xml.ws.Response;
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -28,12 +33,25 @@ public class DesignTacoController {
         this.tacoRepository = tacoRepository;
     }
 
+//    @GetMapping("/recent")
+//    public Iterable<Taco> recentTacos() {
+//        final PageRequest page = PageRequest.of(
+//            0, 12, Sort.by("createdAt").descending()
+//        );
+//        return tacoRepository.findAll(page).getContent();
+//    }
+
     @GetMapping("/recent")
-    public Iterable<Taco> recentTacos() {
-        final PageRequest page = PageRequest.of(
-            0, 12, Sort.by("createdAt").descending()
+    public Resources<Resource<Taco>> recentTacos() {
+        final PageRequest page = PageRequest.of(0, 12, Sort.by("createdAt").descending()
         );
-        return tacoRepository.findAll(page).getContent();
+
+        final Collection<Taco> tacos = tacoRepository.findAll(page).getContent();
+        final Resources<Resource<Taco>> recentResources = Resources.wrap(tacos);
+
+        recentResources.add(new Link("http://localhost:8080/design/recent", "recents"));
+
+        return recentResources;
     }
 
     @GetMapping("/{id}")

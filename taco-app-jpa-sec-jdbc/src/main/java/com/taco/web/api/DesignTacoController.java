@@ -9,6 +9,7 @@ import org.springframework.hateoas.EntityLinks;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
+import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -49,7 +50,12 @@ public class DesignTacoController {
         final Collection<Taco> tacos = tacoRepository.findAll(page).getContent();
         final Resources<Resource<Taco>> recentResources = Resources.wrap(tacos);
 
-        recentResources.add(new Link("http://localhost:8080/design/recent", "recents"));
+        // recentResources.add(new Link("http://localhost:8080/design/recent", "recents"));
+        recentResources.add(
+                ControllerLinkBuilder.linkTo(DesignTacoController.class)
+                        .slash("recent")
+                        .withRel("recents")
+        );
 
         return recentResources;
     }

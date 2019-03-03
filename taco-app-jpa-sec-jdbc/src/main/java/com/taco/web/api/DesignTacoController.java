@@ -11,11 +11,13 @@ import org.springframework.hateoas.Resources;
 //import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 //import org.springframework.hateoas.Link;
 
+import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
@@ -44,24 +46,36 @@ public class DesignTacoController {
 //        return tacoRepository.findAll(page).getContent();
 //    }
 
+//    @GetMapping("/recent")
+//    public Resources<Resource<Taco>> recentTacos() {
+//        final PageRequest page = PageRequest.of(0, 12, Sort.by("createdAt").descending());
+//        final Collection<Taco> tacos = tacoRepository.findAll(page).getContent();
+//        final Resources<Resource<Taco>> recentResources = Resources.wrap(tacos);
+//
+//        // recentResources.add(new Link("http://localhost:8080/design/recent", "recents"));
+////        recentResources.add(
+////                ControllerLinkBuilder.linkTo(DesignTacoController.class)
+////                        .slash("recent")                //          /recent
+////                        .withRel("recents")
+////);
+//        //final Resources<Resource<Taco>> recentResources = Resources.wrap(tacos);
+//        recentResources.add(linkTo(methodOn(DesignTacoController.class).recentTacos())
+//                .withRel("recents")
+//        );
+//
+//        return recentResources;
+//    }
+
     @GetMapping("/recent")
-    public Resources<Resource<Taco>> recentTacos() {
-        final PageRequest page = PageRequest.of(0, 12, Sort.by("createdAt").descending()
-        );
+    public Resources<TacoResource> recentTacos() {
+        final PageRequest page = PageRequest.of(0, 12, Sort.by("createdAt").descending());
+        Collection<Taco> tacos = tacoRepository.findAll(page).getContent();
 
-        final Collection<Taco> tacos = tacoRepository.findAll(page).getContent();
-        final Resources<Resource<Taco>> recentResources = Resources.wrap(tacos);
+        final List<TacoResource> tacoResources = new TacoResourceAssembler().toResources(tacos);
+        final Resources<TacoResource> recentResources = new Resources<TacoResource>(tacoResources);
 
-        // recentResources.add(new Link("http://localhost:8080/design/recent", "recents"));
-//        recentResources.add(
-//                ControllerLinkBuilder.linkTo(DesignTacoController.class)
-//                        .slash("recent")                //          /recent
-//                        .withRel("recents")
-//);
-        //final Resources<Resource<Taco>> recentResources = Resources.wrap(tacos);
         recentResources.add(
-                linkTo(methodOn(DesignTacoController.class).recentTacos())
-                .withRel("recents")
+                linkTo(methodOn(DesignTacoController.class).recentTacos()).withRel("recents")
         );
 
         return recentResources;

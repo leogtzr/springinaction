@@ -10,6 +10,8 @@ import java.util.List;
 
 public class TacoResource extends ResourceSupport {
 
+    private static final IngredientResourceAssembler ingredientAssembler = new IngredientResourceAssembler();
+
     @Getter
     private final String name;
 
@@ -17,12 +19,12 @@ public class TacoResource extends ResourceSupport {
     private final Date createdAt;
 
     @Getter
-    private final List<Ingredient> ingredients;
+    private final List<IngredientResource> ingredients;
 
     public TacoResource(final Taco taco) {
         this.name = taco.getName();
         this.createdAt = taco.getCreatedAt();
-        this.ingredients = taco.getIngredients();
+        this.ingredients = ingredientAssembler.toResources(taco.getIngredients());
     }
 
 }

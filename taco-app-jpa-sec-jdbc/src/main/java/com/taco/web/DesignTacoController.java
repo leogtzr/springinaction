@@ -19,15 +19,14 @@ import com.taco.domain.Ingredient.Type;
 import com.taco.domain.Order;
 import com.taco.data.TacoRepository;
 
-@Controller
+@Controller("tamal2")
 // @RequestMapping(path = "/design", produces = "application/json")
 @RequestMapping("/design")
 //@CrossOrigin(origins = "*")
 @SessionAttributes("order")
 public class DesignTacoController {
   
-  private final IngredientRepository ingredientRepo;
-  
+  private IngredientRepository ingredientRepo;
   private TacoRepository designRepo;
 
   @Autowired

@@ -23,7 +23,7 @@ import java.util.Optional;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
-@RestController
+@RestController("tamal1")
 @RequestMapping(path = "/design", produces = "application/json")                     // Accept: "application/json"
 // @RequestMapping(path = "/design", produces = {"application/json", "text/xml")     // Accept: "application/json"
 @CrossOrigin(origins = "*")
@@ -69,7 +69,7 @@ public class DesignTacoController {
     @GetMapping("/recent")
     public Resources<TacoResource> recentTacos() {
         final PageRequest page = PageRequest.of(0, 12, Sort.by("createdAt").descending());
-        Collection<Taco> tacos = tacoRepository.findAll(page).getContent();
+        Collection<Taco> tacos = tacoRepository.findAllPage(page).getContent();
 
         final List<TacoResource> tacoResources = new TacoResourceAssembler().toResources(tacos);
         final Resources<TacoResource> recentResources = new Resources<TacoResource>(tacoResources);

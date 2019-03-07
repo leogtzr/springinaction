@@ -3,8 +3,7 @@ package com.taco.web.api;
 import com.taco.data.TacoRepository;
 import com.taco.domain.Taco;
 
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
-
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import org.springframework.data.domain.PageRequest;
@@ -14,8 +13,6 @@ import org.springframework.hateoas.Resources;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import java.util.List;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
@@ -33,17 +30,15 @@ public class RecentTacosController {
     public ResponseEntity<Resources<TacoResource>> recentTacos() {
         final PageRequest page = PageRequest.of(
                 0, 12, Sort.by("createdAt").descending());
-        final Collection<Taco> tacos = tacoRepository.findAllPage(page).getContent();
 
-        List<TacoResource> tacoResources =
-                new TacoResourceAssembler().toResources(tacos);
-        Resources<TacoResource> recentResources =
-                new Resources<TacoResource>(tacoResources);
-        recentResources.add(
-                linkTo(methodOn(RecentTacosController.class).recentTacos())
-                        .withRel("recents"));
+        final Iterable<Taco> tacosIt = tacoRepository.findAll();
+        final List<Taco> tacos = new ArrayList<>();
+        tacosIt.forEach(tacos::add);
+
+        final List<TacoResource> tacoResources = new TacoResourceAssembler().toResources(tacos);
+        final Resources<TacoResource> recentResources = new Resources<TacoResource>(tacoResources);
+        recentResources.add(linkTo(methodOn(RecentTacosController.class).recentTacos()).withRel("recents"));
         return new ResponseEntity<>(recentResources, HttpStatus.OK);
     }
-
 
 }

@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TacoRepository extends CrudRepository<Taco, Long> {
-    Resources<Taco> findAllPage(PageRequest page);
+    // Resources<Taco> findAllPage(PageRequest page);
 }

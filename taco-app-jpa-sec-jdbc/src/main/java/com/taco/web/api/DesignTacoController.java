@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -68,8 +69,12 @@ public class DesignTacoController {
 
     @GetMapping("/recent")
     public Resources<TacoResource> recentTacos() {
-        final PageRequest page = PageRequest.of(0, 12, Sort.by("createdAt").descending());
-        Collection<Taco> tacos = tacoRepository.findAllPage(page).getContent();
+//        final PageRequest page = PageRequest.of(0, 12, Sort.by("createdAt").descending());
+//        Collection<Taco> tacos = tacoRepository.findAllPage(page).getContent();
+
+        final Iterable<Taco> tacosIt = tacoRepository.findAll();
+        final List<Taco> tacos = new ArrayList<>();
+        tacosIt.forEach(tacos::add);
 
         final List<TacoResource> tacoResources = new TacoResourceAssembler().toResources(tacos);
         final Resources<TacoResource> recentResources = new Resources<TacoResource>(tacoResources);

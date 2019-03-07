@@ -1,4 +1,4 @@
-package com.rest.repo.datarestrepo;
+package com.rest.repo;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

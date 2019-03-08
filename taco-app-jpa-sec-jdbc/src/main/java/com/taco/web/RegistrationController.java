@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/controller")
+@RequestMapping("/register")
 public class RegistrationController {
 
     private UserRepository userRepository;

@@ -19,4 +19,9 @@ public class DummyController {
         );
     }
 
+    @GetMapping("/tamal")
+    public ResponseEntity<Void> tamal() {
+
+    }
+
 }

@@ -3,6 +3,10 @@ package com.jms.messaging;
 import com.jms.domain.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessagePostProcessor;
+
+import javax.jms.JMSException;
+import javax.jms.Message;
 
 public class JmsOrderMessagingService implements OrderMessagingService {
 
@@ -16,6 +20,12 @@ public class JmsOrderMessagingService implements OrderMessagingService {
 
     @Override
     public void sendOrder(final Order order) {
-        jms.send(session -> session.createObjectMessage(order));
+        // jms.send("localhost", session -> session.createObjectMessage(order));
+        // jms.convertAndSend("localhost", order);
+        // jms.convertAndSend();
+        jms.convertAndSend("localhost", order, message -> {
+            message.setStringProperty("X_ORDER_SOURCE", "WEB");
+            return message;
+        });
     }
 }

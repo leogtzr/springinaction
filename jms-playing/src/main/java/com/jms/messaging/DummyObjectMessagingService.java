@@ -1,31 +1,33 @@
 package com.jms.messaging;
 
-import com.jms.domain.Order;
+import com.jms.domain.DummyObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
-import org.springframework.jms.core.MessagePostProcessor;
+import org.springframework.stereotype.Component;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
 
-public class JmsOrderMessagingService implements OrderMessagingService {
+@Component
+public class DummyObjectMessagingService implements DummyMessagingService{
 
     private JmsTemplate jms;
 
     @Autowired
-    public JmsOrderMessagingService(final JmsTemplate jms) {
+    public DummyObjectMessagingService(final JmsTemplate jms) {
         this.jms = jms;
     }
 
     @Override
-    public void sendOrder(final Order order) {
+    public void sendOrder(final DummyObject dummyObject) {
         // jms.send("localhost", session -> session.createObjectMessage(order));
         // jms.convertAndSend("localhost", order);
-        jms.convertAndSend("localhost", order, this::addOrderSource);
+        jms.convertAndSend("localhost", dummyObject, this::addOrderSource);
     }
 
     private Message addOrderSource(final Message message) throws JMSException {
         message.setStringProperty("X_ORDER_SOURCE", "WEB");
         return message;
     }
+
 }

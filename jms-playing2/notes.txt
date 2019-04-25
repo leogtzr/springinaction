@@ -1,0 +1,12 @@
+spring:
+  profiles: prod
+  rabbitmq:
+    host: rabbit.tacocloud.com
+    port: 5673
+    username: tacoweb
+    password: l3tm31n
+
+
+Take a look at:
+https://grokonez.com/spring-framework/spring-jms/apache-artemis-produceconsume-jms-messages-springboot-artemis-applications
+

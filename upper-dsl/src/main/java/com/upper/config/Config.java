@@ -37,7 +37,7 @@ public class Config {
     }
 
     @Bean
-    public IntegrationFlow decoaretFlow() {
+    public IntegrationFlow decorateFlow() {
         return IntegrationFlows
                 .from("decorate")
                 .<String, String>transform(s -> "[" + s + "]")

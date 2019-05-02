@@ -5,8 +5,8 @@ import org.springframework.integration.annotation.MessagingGateway;
 import org.springframework.stereotype.Component;
 
 @Component
-@MessagingGateway
+@MessagingGateway(defaultReplyChannel = "decorate")
 public interface LowercaseGateway {
-    @Gateway(requestChannel = "lower")
+    @Gateway(requestChannel = "lower", replyChannel = "decorate")
     String lower(String str);
 }

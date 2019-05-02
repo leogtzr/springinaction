@@ -27,4 +27,21 @@ public class Config {
                 .get();
     }
 
+    @Bean
+    public IntegrationFlow lowerFlow() {
+        return IntegrationFlows
+                .from("lower")
+                .<String, String>transform(String::toLowerCase)
+                .channel("decorate")
+                .get();
+    }
+
+    @Bean
+    public IntegrationFlow decoaretFlow() {
+        return IntegrationFlows
+                .from("decorate")
+                .<String, String>transform(s -> "[" + s + "]")
+                .get();
+    }
+
 }

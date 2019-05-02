@@ -17,4 +17,14 @@ public class Config {
                 .get();
     }
 
+    @Bean
+    public IntegrationFlow print() {
+        return IntegrationFlows
+                .from(MessageChannels.direct("sysout"))
+                .handle(msg -> {
+                    System.out.println("Message payload: " + msg.getPayload());
+                })
+                .get();
+    }
+
 }
